@@ -1,6 +1,6 @@
 ﻿namespace RainBot.Core;
 
-public enum DayTime 
+public enum DayTime
 {
     Night,
     Morning,
