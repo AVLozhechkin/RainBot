@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="YandexWeatherApi" Version="0.0.1" />
+	<PackageReference Include="AWSSDK.SQS" Version="3.7.103.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RainBot.Core\RainBot.Core.csproj" />
+  </ItemGroup>
+
+</Project>
