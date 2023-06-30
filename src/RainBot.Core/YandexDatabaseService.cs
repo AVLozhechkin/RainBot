@@ -97,7 +97,7 @@ WHERE chatId == $chatId
 
     #endregion
 
-    #region WeatherRecords
+   /* #region WeatherRecords
 
     public async Task<Forecast> GetWeatherRecordByDateAndDayTime(DateTime date, DayTime dayTime)
     {
@@ -145,7 +145,7 @@ WHERE Date = $date and DayTime = $dayTime
         return forecast;
     }
     
-/*        public async Task UpdateWeatherRecord(Forecast forecast)
+*//*        public async Task UpdateWeatherRecord(Forecast forecast)
         {
             using var tableClient = new TableClient(driver, new TableClientConfig());
 
@@ -158,9 +158,9 @@ WHERE Date = $date and DayTime = $dayTime
     WHERE id = $id
     ";
 
-        }*/
+        }*//*
 
-    #endregion
+    #endregion*/
 
     protected virtual void Dispose(bool disposing)
     {
