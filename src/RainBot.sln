@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainBot.TelegramHandler", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainBot.WeatherHandler", "RainBot.WeatherHandler\RainBot.WeatherHandler.csproj", "{C840333E-1F59-4B43-A22C-15BE03D89F4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainBot.StartHandler", "RainBot.StartHandler\RainBot.StartHandler.csproj", "{560057D5-DB32-4B46-9459-59E4EC36EB5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainBot.StartHandler", "RainBot.StartHandler\RainBot.StartHandler.csproj", "{560057D5-DB32-4B46-9459-59E4EC36EB5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainBot.StopHandler", "RainBot.StopHandler\RainBot.StopHandler.csproj", "{FB7B84A3-8A7F-448B-A0D2-AA6606CA05DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{560057D5-DB32-4B46-9459-59E4EC36EB5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{560057D5-DB32-4B46-9459-59E4EC36EB5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{560057D5-DB32-4B46-9459-59E4EC36EB5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB7B84A3-8A7F-448B-A0D2-AA6606CA05DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB7B84A3-8A7F-448B-A0D2-AA6606CA05DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB7B84A3-8A7F-448B-A0D2-AA6606CA05DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB7B84A3-8A7F-448B-A0D2-AA6606CA05DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,12 +1,18 @@
+using System.Text.Json.Serialization;
+
 namespace RainBot.StartHandler;
 
 public record Response
 {
     public Response(int statusCode, string body)
     {
-        this.statusCode = statusCode;
-        this.body = body;
+        StatusCode = statusCode;
+        Body = body;
     }
-    public string body { get; set; }
-    public int statusCode { get; set; }
+
+    [JsonPropertyName("body")]
+    public string Body { get; set; }
+
+    [JsonPropertyName("statusCode")]
+    public int StatusCode { get; set; }
 }
