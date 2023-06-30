@@ -5,9 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="YandexWeatherApi" Version="0.0.1" />
     <PackageReference Include="AWSSDK.SQS" Version="3.7.100.83" />
-    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.0" />
+    <PackageReference Include="Yandex.Cloud.SDK" Version="1.2.0" />
+    <PackageReference Include="Ydb.Sdk" Version="0.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RainBot.Core\RainBot.Core.csproj" />
+  </ItemGroup>
 </Project>

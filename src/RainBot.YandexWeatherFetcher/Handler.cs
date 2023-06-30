@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Mapster;
 using RainBot.Core;
 using YandexWeatherApi;
 using YandexWeatherApi.Extensions;
-using YandexWeatherApi.Models.InformersModels;
-using YandexWeatherApi.Result;
 using Forecast = YandexWeatherApi.Models.InformersModels.Forecast;
 using Part = YandexWeatherApi.Models.InformersModels.Part;
 
@@ -14,46 +13,44 @@ namespace RainBot.YandexWeatherFetcher;
 
 public class Handler
 {
-    public async Task<Response> FunctionHandler()
+    private readonly string _yaWeatherApiKey = Environment.GetEnvironmentVariable("YANDEX_WEATHER");
+    private readonly string _accessKey = Environment.GetEnvironmentVariable("SQS_ACCESS_KEY");
+    private readonly string _secret = Environment.GetEnvironmentVariable("SQS_SECRET");
+    private readonly string _endpointRegion = Environment.GetEnvironmentVariable("SQS_ENDPOINT_REGION");
+    private readonly Uri _weatherQueue = new Uri(Environment.GetEnvironmentVariable("WEATHER_QUEUE"));
+
+    public Handler()
     {
         SetupMapping();
 
-        var yaWeatherApiKey = Environment.GetEnvironmentVariable("YANDEX_WEATHER");
-        var accessKey = Environment.GetEnvironmentVariable("SQS_ACCESS_KEY");
-        var secret = Environment.GetEnvironmentVariable("SQS_SECRET");
-        var endpointRegion = Environment.GetEnvironmentVariable("SQS_ENDPOINT_REGION");
-        var isWeatherQueueProvided = Uri.TryCreate(Environment.GetEnvironmentVariable("WEATHER_QUEUE"), UriKind.Absolute, out Uri weatherQueue);
+        Guard.IsNotNullOrWhiteSpace(_yaWeatherApiKey);
+        Guard.IsNotNullOrWhiteSpace(_accessKey);
+        Guard.IsNotNullOrWhiteSpace(_secret);
+        Guard.IsNotNullOrWhiteSpace(_endpointRegion);
+    }
 
-        if (string.IsNullOrWhiteSpace(yaWeatherApiKey) ||
-            string.IsNullOrWhiteSpace(accessKey) ||
-            string.IsNullOrWhiteSpace(secret) ||
-            string.IsNullOrWhiteSpace(endpointRegion) ||
-            !isWeatherQueueProvided)
-        {
-            Console.WriteLine("The function does not work because not all environment variables are specified");
-            return new Response(500, string.Empty);
-        }
+    public async Task<Response> FunctionHandler()
+    {
+        var forecast = await GetForecastAsync(_yaWeatherApiKey);
 
-        var forecast = await GetForecastAsync(yaWeatherApiKey);
+        var weatherRecords = MapForecastPartsToWeatherRecords(forecast);
 
-        var weatherRecords = TransformForecastToWeatherRecords(forecast);
-
-        using var ymqClient = new YandexMessageQueueClient(accessKey, secret, endpointRegion);
-        await ymqClient.SendMessageAsync(weatherRecords, weatherQueue, true);
+        using var ymqClient = new YandexMessageQueueClient(_accessKey, _secret, _endpointRegion);
+        await ymqClient.SendMessageAsync(weatherRecords, _weatherQueue, true);
 
         return new Response(200, string.Empty);
     }
 
     private static async Task<Forecast> GetForecastAsync(string yaWeatherApiKey)
     {
-        IYandexWeatherInformersRequest request = YandexWeather.CreateBuilder()
+        var request = YandexWeather.CreateBuilder()
                             .UseApiKey(yaWeatherApiKey)
                             .Build()
                             .Informers()
                             .WithLocale(WeatherLocale.ru_RU)
                             .WithLocality(new WeatherLocality(59.942668, 30.315871));
 
-        Result<InformersResponse> result = await request.Send(new CancellationToken());
+        var result = await request.Send(new CancellationToken());
 
         if (result.IsFail)
         {
@@ -63,7 +60,7 @@ public class Handler
         return result.Data.Forecast;
     }
 
-    private static WeatherRecord[] TransformForecastToWeatherRecords(Forecast forecast)
+    private static WeatherRecord[] MapForecastPartsToWeatherRecords(Forecast forecast)
     {
         var updatedAt = DateTimeOffset.UtcNow;
         var weatherRecords = new WeatherRecord[2];

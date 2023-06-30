@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainBot.Core", "RainBot.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainBot.YandexWeatherFetcher", "RainBot.YandexWeatherFetcher\RainBot.YandexWeatherFetcher.csproj", "{52680563-1E8F-48C6-AC32-0C1FE65AEE55}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainBot.TelegramHandler", "RainBot.TelegramHandler\RainBot.TelegramHandler.csproj", "{C8FAEAAE-CCB6-40D8-81FC-39A4E16116D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{52680563-1E8F-48C6-AC32-0C1FE65AEE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52680563-1E8F-48C6-AC32-0C1FE65AEE55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52680563-1E8F-48C6-AC32-0C1FE65AEE55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8FAEAAE-CCB6-40D8-81FC-39A4E16116D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8FAEAAE-CCB6-40D8-81FC-39A4E16116D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8FAEAAE-CCB6-40D8-81FC-39A4E16116D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8FAEAAE-CCB6-40D8-81FC-39A4E16116D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
