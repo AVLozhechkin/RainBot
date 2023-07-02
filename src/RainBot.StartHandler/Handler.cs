@@ -48,7 +48,7 @@ public class Handler : YcFunction<Request, Task<Response>>
 
     private async Task<YdbQueryResult> TryInsertSubscriptionAsync(string accessToken, ulong chatId, string languageCode)
     {
-        using var ydbService = new YandexDatabaseService(_ydbConnectionString, accessToken);
+        using var ydbService = new YandexDatabaseClient(_ydbConnectionString, accessToken);
         await ydbService.Initialize();
 
         Console.WriteLine($"Inserting a subscription for chatId {chatId} ({languageCode})");

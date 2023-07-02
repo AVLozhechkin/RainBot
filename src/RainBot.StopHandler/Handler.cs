@@ -49,11 +49,11 @@ public class Handler : YcFunction<Request, Task<Response>>
 
     private async Task<YdbQueryResult> RemoveSubscriptionAsync(string accessToken, ulong chatId, string languageCode)
     {
-        using var ydbClient = new YandexDatabaseService(_ydbConnectionString, accessToken);
+        using var ydbClient = new YandexDatabaseClient(_ydbConnectionString, accessToken);
         await ydbClient.Initialize();
 
         Console.WriteLine($"Removing a subscription for chatId {chatId} ({languageCode})");
-        var removeResult = await ydbClient.RemoveSubscription(chatId);
+        var removeResult = await ydbClient.RemoveSubscriptionAsync(chatId);
         Console.WriteLine($"Remove result for {chatId} is {removeResult}");
 
         return removeResult;
