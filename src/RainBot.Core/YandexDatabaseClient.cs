@@ -1,7 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,12 +34,50 @@ public class YandexDatabaseClient : IDisposable
 
     #region Subcsriptions
 
-    public async Task<YdbQueryResult> InsertSubscriptionAsync(ulong chatId, string languageCode)
+    public async Task<IReadOnlyList<Subscription>> GetSubscriptionsAsync()
     {
         using var tableClient = new TableClient(_driver, new TableClientConfig());
 
         var query = @"
-DECLARE $chatId AS Uint64;
+SELECT chatId, languageCode
+FROM Subscriptions
+";
+
+        var response = await tableClient.SessionExec(async session =>
+        {
+            return await session.ExecuteDataQuery(
+                query: query,
+                txControl: TxControl.BeginSerializableRW().Commit()
+            );
+        });
+
+        response.Status.EnsureSuccess();
+
+        var queryResponse = (ExecuteDataQueryResponse)response;
+
+        var subscriptions = new List<Subscription>();
+
+
+        foreach (var row in queryResponse.Result.ResultSets[0].Rows)
+        {
+            var subscription = new Subscription
+            {
+                ChatId = (long) row["chatId"],
+                LanguageCode = row["languageCode"].ToString()
+            };
+
+            subscriptions.Add(subscription);
+        }
+
+        return subscriptions;
+    }
+
+    public async Task<YdbQueryResult> InsertSubscriptionAsync(long chatId, string languageCode)
+    {
+        using var tableClient = new TableClient(_driver, new TableClientConfig());
+
+        var query = @"
+DECLARE $chatId AS Int64;
 DECLARE $languageCode as Utf8;
 
 INSERT INTO subscriptions (chatId, languageCode)
@@ -55,7 +90,7 @@ VALUES ($chatId, $languageCode)
                 query: query,
                 parameters: new Dictionary<string, YdbValue>
                 {
-                        { "$chatId", YdbValue.MakeUint64(chatId) },
+                        { "$chatId", YdbValue.MakeInt64(chatId) },
                         { "$languageCode", YdbValue.MakeUtf8(languageCode) }
                 },
                 txControl: TxControl.BeginSerializableRW().Commit()

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RainBot.Core\RainBot.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.100.83" />
+    <PackageReference Include="Yandex.Cloud.SDK" Version="1.2.0" />
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.0" />
+  </ItemGroup>
+
+</Project>

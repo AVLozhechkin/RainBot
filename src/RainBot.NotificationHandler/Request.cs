@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using RainBot.Core;
 
-namespace RainBot.StartHandler;
+namespace RainBot.NotificationHandler;
 
 public record Request
 {
@@ -28,6 +29,5 @@ public record MessageBody
 }
 public record QueueInput
 {
-    public long Id { get; set; }
-    public string LanguageCode { get; set; }
+    public IReadOnlyList<WeatherRecord> WeatherRecords { get; set; }
 }

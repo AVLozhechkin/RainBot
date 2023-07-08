@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using RainBot.Core;
 
-namespace RainBot.StartHandler;
+namespace RainBot.SendTelegramMessage;
 
 public record Request
 {
@@ -24,10 +25,5 @@ public record Details
 public record MessageBody
 {
     [JsonPropertyName("body")]
-    public QueueInput Body { get; set; }
-}
-public record QueueInput
-{
-    public long Id { get; set; }
-    public string LanguageCode { get; set; }
+    public SendMessageDto Body { get; set; }
 }

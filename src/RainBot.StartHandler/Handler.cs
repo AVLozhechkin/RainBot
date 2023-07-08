@@ -58,12 +58,19 @@ public class Handler : YcFunction<Request, Task<Response>>
         return insertResult;
     }
 
-    private async Task SendMessageAsync(ulong id, MessageTypes type, string languageCode, Uri queue)
+    private async Task SendMessageAsync(long id, MessageTypes type, string languageCode, Uri queue)
     {
+        var sendMessageDto = new SendMessageDto
+        {
+            ChatId = id,
+            LanguageCode = languageCode,
+            Text = MessageStrings.RussianMessages.Value[type]
+        };
+
         using var ymqClient = new YandexMessageQueueClient(_accessKey, _secret, _endpointRegion);
 
         Console.WriteLine($"Sending a message to {id} ({languageCode}) that {type}");
-        await ymqClient.SendMessageAsync(new SendMessageDto { ChatId = id, Type = type, LanguageCode = languageCode }, queue, true);
+        await ymqClient.SendMessageAsync(sendMessageDto, queue, true);
         Console.WriteLine($"Message for {id} ({languageCode}) forwarded to the {queue} queue");
     }
 }
