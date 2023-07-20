@@ -18,14 +18,15 @@ public class Handler
 
     public async Task<Response> FunctionHandler(Request request)
     {
-
         Guard.IsNotNull(request);
         Guard.IsNotNullOrWhiteSpace(_accessKey);
         Guard.IsNotNullOrWhiteSpace(_secret);
         Guard.IsNotNullOrWhiteSpace(_endpointRegion);
 
         var update = JsonConvert.DeserializeObject<Update>(request.body);
+
         var queueMessage = new { update.Message.From.Id, update.Message.From.LanguageCode };
+
         var destQueue = update.Message.Text switch
         {
             "/start" => _startQueue,

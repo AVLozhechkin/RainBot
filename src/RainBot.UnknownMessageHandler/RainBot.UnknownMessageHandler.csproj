@@ -5,9 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster" Version="7.3.0" />
-    <PackageReference Include="YandexWeatherApi" Version="0.0.1" />
-	  <PackageReference Include="AWSSDK.SQS" Version="3.7.103.5" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.100.83" />
+    <PackageReference Include="Yandex.Cloud.SDK" Version="1.2.0" />
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.0" />
     <PackageReference Include="Ydb.Sdk" Version="0.0.5" />
   </ItemGroup>

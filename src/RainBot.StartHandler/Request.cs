@@ -24,7 +24,7 @@ public record Details
 public record MessageBody
 {
     [JsonPropertyName("body")]
-    public QueueInput Body { get; set; }
+    public string Body { get; set; }
 }
 public record QueueInput
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Amazon.Runtime;
 using CommunityToolkit.Diagnostics;
 using RainBot.Core;
 using Yandex.Cloud.Functions;
@@ -33,7 +32,7 @@ public class Handler
         var serviceToken = JsonSerializer.Deserialize<ServiceToken>(context.TokenJson);
         Guard.IsNotNullOrWhiteSpace(serviceToken.AccessToken);
 
-        var weatherRecordsFromApi = request.Messages[0].Details.Message.Body;
+        var weatherRecordsFromApi = JsonSerializer.Deserialize<IReadOnlyList<WeatherRecord>>(request.Messages[0].Details.Message.Body);
 
         using var ydbClient = new YandexDatabaseClient(_ydbConnectionString, serviceToken.AccessToken);
         await ydbClient.Initialize();
@@ -63,6 +62,19 @@ public class Handler
     private async Task NotifyIfRainAsync(IReadOnlyList<WeatherRecord> recordsFromApi, IReadOnlyList<WeatherRecord> recordsFromDatabase)
     {
         var recordsToNotify = new List<WeatherRecord>();
+
+        Console.WriteLine("Records from api");
+        foreach (var item in recordsFromApi)
+        {
+            Console.WriteLine($"{item.Date} {item.DayTime} {item.UpdatedAt} {item.Condition}");
+        }
+
+        Console.WriteLine("Records from db");
+
+        foreach (var item in recordsFromDatabase)
+        {
+            Console.WriteLine($"{item.Date} {item.DayTime} {item.UpdatedAt} {item.Condition}");
+        }
 
         for (int i = 0; i < recordsFromApi.Count; i++)
         {

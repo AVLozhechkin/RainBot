@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace RainBot.WeatherHandler;
+namespace RainBot.UnknownMessageHandler;
 
 public record Request
 {
@@ -25,4 +25,9 @@ public record MessageBody
 {
     [JsonPropertyName("body")]
     public string Body { get; set; }
+}
+public record QueueInput
+{
+    public long Id { get; set; }
+    public string LanguageCode { get; set; }
 }

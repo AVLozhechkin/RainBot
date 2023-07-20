@@ -31,7 +31,7 @@ public class Handler : YcFunction<Request, Task<Response>>
         var serviceToken = JsonSerializer.Deserialize<ServiceToken>(context.TokenJson);
         Guard.IsNotNullOrWhiteSpace(serviceToken.AccessToken);
 
-        var queueMessage = request.Messages[0].Details.Message.Body;
+        var queueMessage = JsonSerializer.Deserialize<QueueInput>(request.Messages[0].Details.Message.Body);
 
         var insertResult = await TryInsertSubscriptionAsync(serviceToken.AccessToken, queueMessage.Id, queueMessage.LanguageCode);
 
@@ -46,7 +46,7 @@ public class Handler : YcFunction<Request, Task<Response>>
         return new Response(200, string.Empty);
     }
 
-    private async Task<YdbQueryResult> TryInsertSubscriptionAsync(string accessToken, ulong chatId, string languageCode)
+    private async Task<YdbQueryResult> TryInsertSubscriptionAsync(string accessToken, long chatId, string languageCode)
     {
         using var ydbService = new YandexDatabaseClient(_ydbConnectionString, accessToken);
         await ydbService.Initialize();
@@ -64,7 +64,7 @@ public class Handler : YcFunction<Request, Task<Response>>
         {
             ChatId = id,
             LanguageCode = languageCode,
-            Text = MessageStrings.RussianMessages.Value[type]
+            Type = type
         };
 
         using var ymqClient = new YandexMessageQueueClient(_accessKey, _secret, _endpointRegion);

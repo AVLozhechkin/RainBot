@@ -13,7 +13,7 @@ namespace RainBot.YandexWeatherFetcher;
 
 public class Handler
 {
-    private readonly string _yaWeatherApiKey = Environment.GetEnvironmentVariable("YANDEX_WEATHER");
+    private readonly string _yaWeatherApiKey = Environment.GetEnvironmentVariable("YANDEX_WEATHER_API_KEY");
     private readonly string _accessKey = Environment.GetEnvironmentVariable("SQS_ACCESS_KEY");
     private readonly string _secret = Environment.GetEnvironmentVariable("SQS_SECRET");
     private readonly string _endpointRegion = Environment.GetEnvironmentVariable("SQS_ENDPOINT_REGION");
@@ -29,7 +29,7 @@ public class Handler
         Guard.IsNotNullOrWhiteSpace(_endpointRegion);
     }
 
-    public async Task<Response> FunctionHandler()
+    public async Task<Response> FunctionHandler(string request)
     {
         var forecast = await GetForecastAsync(_yaWeatherApiKey);
 
@@ -65,18 +65,27 @@ public class Handler
         var updatedAt = DateTimeOffset.UtcNow;
         var weatherRecords = new WeatherRecord[2];
 
+        var currentTime = DateTime.UtcNow.AddHours(3);
+
         for (int i = 0; i < forecast.Parts.Count; i++)
         {
             var forecastPart = forecast.Parts[i];
 
             var weatherRecord = new WeatherRecord
             {
-                Id = Guid.NewGuid().ToString(),
-                Date = DateTimeOffset.Parse(forecast.Date),
+                Date = DateTimeOffset.UtcNow.Date,
                 UpdatedAt = updatedAt,
             };
 
             forecastPart.Adapt(weatherRecord);
+
+            // If it is between 12 and 18 hours, then we need to add 1 day to Night forecast. Or if it is between 18 and 24 then we need to add 1 day to both records
+
+            if ((currentTime.Hour >= 12 && currentTime.Hour < 18 && weatherRecord.DayTime == DayTime.Night) ||
+                (currentTime.Hour >= 18 && currentTime.Hour < 24))
+            {
+                weatherRecord.Date.AddDays(1);
+            }
 
             weatherRecords[i] = weatherRecord;
         }

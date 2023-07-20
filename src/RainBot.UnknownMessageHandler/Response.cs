@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace RainBot.SendTelegramMessage;
+namespace RainBot.UnknownMessageHandler;
 
 public record Response
 {
