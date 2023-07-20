@@ -40,7 +40,7 @@ public class YandexDatabaseClient : IDisposable
 
         var query = @"
 SELECT chatId, languageCode
-FROM Subscriptions
+FROM subscriptions
 ";
 
         var response = await tableClient.SessionExec(async session =>
@@ -62,8 +62,8 @@ FROM Subscriptions
         {
             var subscription = new Subscription
             {
-                ChatId = (long) row["chatId"],
-                LanguageCode = row["languageCode"].ToString()
+                ChatId = row["chatId"].GetInt64(),
+                LanguageCode = row["languageCode"].GetOptionalUtf8()
             };
 
             subscriptions.Add(subscription);
@@ -105,12 +105,12 @@ VALUES ($chatId, $languageCode)
         return YdbQueryResult.Ok;
     }
 
-    public async Task<YdbQueryResult> RemoveSubscriptionAsync(ulong chatId)
+    public async Task<YdbQueryResult> RemoveSubscriptionAsync(long chatId)
     {
         using var tableClient = new TableClient(_driver, new TableClientConfig());
 
         var query = @"
-DECLARE $chatId AS Uint64;
+DECLARE $chatId AS Int64;
 
 DELETE FROM subscriptions
 WHERE chatId == $chatId
@@ -121,7 +121,7 @@ WHERE chatId == $chatId
                 query: query,
                 parameters: new Dictionary<string, YdbValue>
                 {
-                        { "$chatId", YdbValue.MakeUint64(chatId) }
+                        { "$chatId", YdbValue.MakeInt64(chatId) }
                 },
                 txControl: TxControl.BeginSerializableRW().Commit()
             );
@@ -142,12 +142,12 @@ WHERE chatId == $chatId
 
         var query = @"
 DECLARE $date1 AS Date;
-DECLARE $dayTime1 as Utf8;
+DECLARE $dayTime1 as Uint8;
 DECLARE $date2 AS Date;
-DECLARE $dayTime1 as Utf8;
+DECLARE $dayTime2 as Uint8;
 
 SELECT * FROM weatherRecords
-WHERE Date = $date1 and DayTime = $dayTime1 or Date = $date2 and DayTime = $dayTime2
+WHERE date = $date1 and dayTime = $dayTime1 or date = $date2 and dayTime = $dayTime2
 ";
 
         var response = await tableClient.SessionExec(async session =>
@@ -157,9 +157,9 @@ WHERE Date = $date1 and DayTime = $dayTime1 or Date = $date2 and DayTime = $dayT
                 parameters: new Dictionary<string, YdbValue>
                 {
                         { "$date1", YdbValue.MakeDate(weatherRecords[0].Date.DateTime) },
-                        { "$dayTime1", YdbValue.MakeUtf8(weatherRecords[0].DayTime.ToString()) },
+                        { "$dayTime1", YdbValue.MakeUint8((byte) weatherRecords[0].DayTime) },
                         { "$date2", YdbValue.MakeDate(weatherRecords[1].Date.DateTime) },
-                        { "$dayTime2", YdbValue.MakeUtf8(weatherRecords[1].DayTime.ToString()) }
+                        { "$dayTime2", YdbValue.MakeUint8((byte) weatherRecords[1].DayTime) }
                 },
                 txControl: TxControl.BeginSerializableRW().Commit()
             );
@@ -169,24 +169,19 @@ WHERE Date = $date1 and DayTime = $dayTime1 or Date = $date2 and DayTime = $dayT
 
         var queryResponse = (ExecuteDataQueryResponse)response;
 
-        var result = queryResponse.Result.ResultSets[0].Rows.SingleOrDefault();
-
-        if (result is null)
-            return null;
-
         var recordsFromDatabase = new List<WeatherRecord>();
 
         foreach (var row in queryResponse.Result.ResultSets[0].Rows)
         {
             var weatherRecord = new WeatherRecord
             {
-                Date = DateTime.Parse(row["date"].ToString()),
-                DayTime = Enum.Parse<DayTime>(row["dayTime"].ToString()),
-                Condition = row["condition"].ToString(),
-                IsNotified = row["isNotified"].GetUint8() == 1,
-                PrecipitationPeriod = (ushort)row["PrecipitationPeriod"],
-                PrecipitationProbability = (byte)row["PrecipitationProbability"],
-                UpdatedAt = DateTime.Parse(row["UpdatedAt"].ToString()),
+                Date = row["date"].GetDate(),
+                DayTime = (DayTime)row["dayTime"].GetUint8(),
+                Condition = row["condition"].GetOptionalUtf8(),
+                IsNotified = row["isNotified"].GetOptionalUint8() == 1,
+                PrecipitationPeriod = row["precipitationPeriod"].GetOptionalUint16().Value,
+                PrecipitationProbability = row["precipitationProbability"].GetOptionalUint8().Value,
+                UpdatedAt = row["updatedAt"].GetOptionalDatetime().Value,
             };
 
             recordsFromDatabase.Add(weatherRecord);
@@ -201,13 +196,13 @@ WHERE Date = $date1 and DayTime = $dayTime1 or Date = $date2 and DayTime = $dayT
 
         var query = @"
 DECLARE $weatherRecords AS List<Struct<
-    date: Date;
-    dayTime: Utf8;
-    condition: Utf8;
-    isNotified: Uint8;
-    precipitationPeriod: Uint16;
-    precipitationProbability: Uint8;
-    updatedAt: Date>>;
+    date: Date,
+    dayTime: Uint8,
+    condition: Utf8,
+    isNotified: Uint8,
+    precipitationPeriod: Uint16,
+    precipitationProbability: Uint8,
+    updatedAt: Datetime>>;
 
 UPSERT INTO weatherRecords
 SELECT * FROM AS_TABLE($weatherRecords);
@@ -215,12 +210,12 @@ SELECT * FROM AS_TABLE($weatherRecords);
         var weatherRecordsData = weatherRecords.Select(wr => YdbValue.MakeStruct(new Dictionary<string, YdbValue>
         {
             { "date", YdbValue.MakeDate(wr.Date.Date) },
-            { "dayTime", YdbValue.MakeUtf8(wr.DayTime.ToString()) },
+            { "dayTime", YdbValue.MakeUint8((byte) wr.DayTime) },
             { "condition", YdbValue.MakeUtf8(wr.Condition) },
             { "isNotified", YdbValue.MakeUint8((byte)(wr.IsNotified ? 1 : 0)) },
             { "precipitationPeriod", YdbValue.MakeUint16(wr.PrecipitationPeriod) },
             { "precipitationProbability", YdbValue.MakeUint8(wr.PrecipitationProbability) },
-            { "updatedAt", YdbValue.MakeDate(wr.UpdatedAt.Date) },
+            { "updatedAt", YdbValue.MakeDatetime(wr.UpdatedAt.DateTime) },
         })).ToList();
 
         var wrList = new Dictionary<string, YdbValue>()

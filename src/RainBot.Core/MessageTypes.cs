@@ -6,6 +6,7 @@ public enum MessageTypes
     SubscriptionRemoved,
     SubscriptionAdded,
     SomethingWentWrong,
+    UnknownMessage,
     WeatherTemplateForOneRecord,
     WeatherTemplateForSameConditions,
     WeatherTemplateForDifferentConditions

@@ -33,7 +33,7 @@ public class Handler : YcFunction<Request, Task<Response>>
         var serviceToken = JsonSerializer.Deserialize<ServiceToken>(context.TokenJson);
         Guard.IsNotNullOrWhiteSpace(serviceToken.AccessToken);
 
-        var weatherRecords = request.Messages[0].Details.Message.Body.WeatherRecords;
+        var weatherRecords = JsonSerializer.Deserialize<IReadOnlyList<WeatherRecord>>(request.Messages[0].Details.Message.Body);
 
         var subscriptions = (await GetSubscriptionsAsync(serviceToken.AccessToken)).ToLookup(s => s.LanguageCode == "en");
 

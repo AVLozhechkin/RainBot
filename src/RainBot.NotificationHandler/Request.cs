@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using RainBot.Core;
 
 namespace RainBot.NotificationHandler;
 
@@ -25,9 +24,5 @@ public record Details
 public record MessageBody
 {
     [JsonPropertyName("body")]
-    public QueueInput Body { get; set; }
-}
-public record QueueInput
-{
-    public IReadOnlyList<WeatherRecord> WeatherRecords { get; set; }
+    public string Body { get; set; }
 }

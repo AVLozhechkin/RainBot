@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using RainBot.Core;
 
 namespace RainBot.SendTelegramMessage;
 
@@ -25,5 +24,5 @@ public record Details
 public record MessageBody
 {
     [JsonPropertyName("body")]
-    public SendMessageDto Body { get; set; }
+    public string Body { get; set; }
 }

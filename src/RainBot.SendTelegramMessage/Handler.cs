@@ -17,7 +17,7 @@ public class Handler
         var telegramToken = Environment.GetEnvironmentVariable("TG_TOKEN");
         Guard.IsNotNullOrWhiteSpace(telegramToken);
 
-        var message = request.Messages[0].Details.Message.Body;
+        var message = JsonSerializer.Deserialize<SendMessageDto>(request.Messages[0].Details.Message.Body);
         Guard.IsNotNull(message);
         Guard.IsNotEqualTo(message.ChatId, 0);
 
