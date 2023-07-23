@@ -38,7 +38,7 @@ jobs:
           terraform init
 
       - name: Terraform destroy
-        run: terrafrom apply --destroy
+        run: terraform apply --destroy
 
       - name: Terraform apply
         run: terraform apply --auto-approve --parallelism=2
