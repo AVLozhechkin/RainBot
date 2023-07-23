@@ -32,5 +32,10 @@ jobs:
       - name: Terraform initialization
         run: terraform init
 
+      - name: Terraform module initialization
+        run: |
+          cd rainbot_tf_module \
+          terraform init
+
       - name: Terraform apply
         run: terraform apply --auto-approve --parallelism=2
