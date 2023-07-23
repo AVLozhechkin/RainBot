@@ -37,5 +37,8 @@ jobs:
           cd rainbot_tf_module;
           terraform init
 
+      - name: Terraform destroy
+        run: terrafrom destroy
+
       - name: Terraform apply
         run: terraform apply --auto-approve --parallelism=2
