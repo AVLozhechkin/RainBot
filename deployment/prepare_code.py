@@ -26,6 +26,11 @@ def copy(src_folder: Path, zip_folder: Path):
         
         files_in_folder = os.listdir(path_to_folder)
         
+        if 'bin' in files_in_folder:
+            files_in_folder.remove('bin')
+        if 'obj' in files_in_folder:
+            files_in_folder.remove('obj')            
+        
         if len(files_in_folder) > 0:
             os.mkdir(path_to_copy)
         
@@ -81,11 +86,8 @@ def removeProjectCopies(zip_folder:Path):
     
 
 deployment_folder = Path(os.getcwd())
-print(deployment_folder)
 src_folder = deployment_folder.parents[1].joinpath('src')
-print(src_folder)
 zips_folder = deployment_folder.parents[0].joinpath("zips")
-print(zips_folder)
 
 prepare(zips_folder)
 copy(src_folder, zips_folder)
