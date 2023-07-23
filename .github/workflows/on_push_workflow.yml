@@ -34,7 +34,7 @@ jobs:
 
       - name: Terraform module initialization
         run: |
-          cd rainbot_tf_module \
+          cd rainbot_tf_module;
           terraform init
 
       - name: Terraform apply
