@@ -28,6 +28,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: Python init
+        run: python3 -m pip install ydb
+
       # Runs a set of commands using the runners shell
       - name: Terraform initialization
         run: terraform init
