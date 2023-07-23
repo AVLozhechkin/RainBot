@@ -84,7 +84,7 @@ public class Handler
             if ((currentTime.Hour >= 12 && currentTime.Hour < 18 && weatherRecord.DayTime == DayTime.Night) ||
                 (currentTime.Hour >= 18 && currentTime.Hour < 24))
             {
-                weatherRecord.Date.AddDays(1);
+                weatherRecord.Date = weatherRecord.Date.AddDays(1);
             }
 
             weatherRecords[i] = weatherRecord;

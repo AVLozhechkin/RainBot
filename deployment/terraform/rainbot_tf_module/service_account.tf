@@ -11,14 +11,12 @@ resource "yandex_resourcemanager_folder_iam_member" "service_account_roles" {
     "ydb.editor",                         # Required to create db instance
     "iam.serviceAccounts.user",           # Required for using service accounts 
     "iam.serviceAccounts.accessKeyAdmin", # Required to create access keys
-    # "functions.functionInvoker", # 
-    "functions.editor" # Required to create and delete functons
+    "functions.editor"                    # Required to create and delete functons
   ])
-  role = each.key
 
+  role      = each.key
   folder_id = yandex_iam_service_account.service_account.folder_id
-
-  member = "serviceAccount:${yandex_iam_service_account.service_account.id}"
+  member    = "serviceAccount:${yandex_iam_service_account.service_account.id}"
 }
 
 resource "yandex_iam_service_account_static_access_key" "access_key" {

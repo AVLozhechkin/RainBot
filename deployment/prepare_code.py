@@ -83,8 +83,8 @@ def removeProjectCopies(zip_folder:Path):
     
 
 deployment_folder = Path(os.getcwd())
-src_folder = deployment_folder.parents[0].joinpath('src')
-zips_folder = deployment_folder.joinpath("zips")
+src_folder = deployment_folder.parents[1].joinpath('src')
+zips_folder = deployment_folder.parents[0].joinpath("zips")
 
 prepare(zips_folder)
 copy(src_folder, zips_folder)

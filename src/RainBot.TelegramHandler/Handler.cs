@@ -25,6 +25,11 @@ public class Handler
 
         var update = JsonConvert.DeserializeObject<Update>(request.body);
 
+        if (update.Message is null)
+        {
+            return new Response(200, string.Empty);
+        }
+
         var queueMessage = new { update.Message.From.Id, update.Message.From.LanguageCode };
 
         var destQueue = update.Message.Text switch

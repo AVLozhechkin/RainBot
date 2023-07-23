@@ -14,6 +14,7 @@ resource "yandex_message_queue" "queue" {
 
   for_each = local.queue_names
 
+
   name                       = each.key
   visibility_timeout_seconds = var.queue_setup.visibility_timeout_seconds
   receive_wait_time_seconds  = var.queue_setup.receive_wait_time_seconds
