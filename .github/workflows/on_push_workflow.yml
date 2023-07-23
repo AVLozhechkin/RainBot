@@ -27,7 +27,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Terraform initialization
-        run: cd deployment/terraform | terraform init
+        run: cd /home/runner/work/RainBot/RainBot/deployment/terraform | terraform init
 
       - name: Terraform apply
-        run: cd deployment/terraform |  terraform apply --auto-approve --parallelism=2
+        run: cd /home/runner/work/RainBot/RainBot/deployment/terraform |  terraform apply --auto-approve --parallelism=2
