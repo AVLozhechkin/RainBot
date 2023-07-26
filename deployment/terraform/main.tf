@@ -17,7 +17,6 @@ resource "null_resource" "prepare_code" {
   provisioner "local-exec" {
     command = "python ../prepare_code.py"
   }
-
 }
 
 module "rainbot" {

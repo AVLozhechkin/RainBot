@@ -1,11 +1,8 @@
 locals {
   queue_to_function = tomap({
-    "start-handler-queue" : yandex_function.start-handler,
-    "stop-handler-queue" : yandex_function.stop-handler,
-    "notification-queue" : yandex_function.notification-handler,
+    "subscription-handler-queue" : yandex_function.subscription-handler,
     "send-telegram-message-queue" : yandex_function.telegram-message-sender,
-    "unknown-queue" : yandex_function.unknown-message-handler,
-    "weather-queue" : yandex_function.weather-handler
+    "forecast-handler-queue" : yandex_function.forecast-handler
   })
 }
 
