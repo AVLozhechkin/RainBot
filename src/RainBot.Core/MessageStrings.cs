@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RainBot.Core.Models;
 
 namespace RainBot.Core;
 

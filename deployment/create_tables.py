@@ -21,7 +21,7 @@ with ydb.Driver(connection_string=f'grpcs://{args.endpoint}?database={args.datab
         )
     )
 
-    weather_records_table = (
+    forecasts_table = (
         ydb.TableDescription()
         .with_primary_keys('dayTime', 'date')
         .with_columns(
@@ -37,4 +37,4 @@ with ydb.Driver(connection_string=f'grpcs://{args.endpoint}?database={args.datab
     
     session = driver.table_client.session().create()
     session.create_table(f'{args.database}/subscriptions', subscriptions_table)
-    session.create_table(f'{args.database}/weatherRecords', weather_records_table)
+    session.create_table(f'{args.database}/forecasts', forecasts_table)

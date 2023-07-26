@@ -1,11 +1,8 @@
 locals {
   queue_names = toset([
-    "start-handler-queue",
-    "stop-handler-queue",
+    "subscription-handler-queue",
     "send-telegram-message-queue",
-    "unknown-queue",
-    "weather-queue",
-    "notification-queue"
+    "forecast-handler-queue",
   ])
 }
 
