@@ -1,5 +1,8 @@
 # editorconfig.org
 
+[*.{cs,vb}]
+dotnet_diagnostic.CA1707.severity = none
+
 # top-most EditorConfig file
 root = true
 

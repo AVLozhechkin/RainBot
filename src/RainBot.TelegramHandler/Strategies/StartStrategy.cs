@@ -19,7 +19,11 @@ public class StartStrategy : IMessageProcessStrategy
     }
     public bool CanBeExecuted(string message)
     {
-        Guard.IsNotNullOrWhiteSpace(message);
+        if (message is null)
+        {
+            return false;
+        }
+
         return message.Trim().ToUpperInvariant() == "/START";
     }
     public async Task ExecuteAsync(Message message)

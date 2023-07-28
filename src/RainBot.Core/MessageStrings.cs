@@ -28,7 +28,7 @@ public static class MessageStrings
             { MessageTypes.SubscriptionAlreadyExist, "Подписка уже оформлена." },
             { MessageTypes.SubscriptionRemoved, "Подписка успешно удалена. Все данные о том, что вы пользовались ботом были удалены." },
             { MessageTypes.UnknownMessage, "Если вы хотите отписаться, то пришлите сообщение с текстом \"/stop\"" },
-            { MessageTypes.WeatherTemplateForSameConditions, "По данным Яндекс Погоды, {0} и {1} ожидаются {2}. Приблизительная продолжительность осадков - {3} и {4} мин. соответственно." },
+            { MessageTypes.WeatherTemplateForSameConditions, "По данным Яндекс Погоды, {0} и {1} ожидается {2}. Приблизительная продолжительность осадков - {3} и {4} мин. соответственно." },
             { MessageTypes.WeatherTemplateForDifferentConditions, "По данным Яндекс Погоды, {0} ожидается {1}, а {2} - {3}. Приблизительная продолжительность осадков - {4} и {5} мин. соответственно." },
             { MessageTypes.WeatherTemplateForOneRecord, "По данным Яндекс Погоды, {0} ожидается {1}. Приблизительная продолжительность осадков - {2} мин." },
         }

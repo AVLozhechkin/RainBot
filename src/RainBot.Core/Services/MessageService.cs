@@ -7,23 +7,23 @@ namespace RainBot.Core.Services;
 
 public static class MessageService
 {
-    public static string BuildNotificationMessage(IReadOnlyList<Forecast> records, string languageCode = "ru")
+    public static string BuildNotificationMessage(IReadOnlyList<Forecast> forecasts, string languageCode = "ru")
     {
-        Guard.IsNotNull(records);
+        Guard.IsNotNull(forecasts);
 
-        if (records.Count == 1)
+        if (forecasts.Count == 1)
         {
-            return BuildMessageForSingleRecord(records[0], languageCode);
+            return BuildMessageForSingleRecord(forecasts[0], languageCode);
         }
 
-        if (records.Count == 2 && records[0].Condition == records[1].Condition)
+        if (forecasts.Count == 2 && forecasts[0].Condition == forecasts[1].Condition)
         {
-            return BuildMessageForSameConditions(records, languageCode);
+            return BuildMessageForSameConditions(forecasts, languageCode);
         }
 
-        if (records.Count == 2)
+        if (forecasts.Count == 2)
         {
-            return BuildMessageForDifferentConditions(records, languageCode);
+            return BuildMessageForDifferentConditions(forecasts, languageCode);
         }
 
         throw new ArgumentException("Records must contain 1 or 2 records");

@@ -8,7 +8,7 @@ using RainBot.Core.Services;
 
 namespace RainBot.SubscriptionHandler;
 
-public class SubscriptionService
+public class SubscriptionService : ISubscriptionService
 {
     private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly IMessageQueueService _mqService;
