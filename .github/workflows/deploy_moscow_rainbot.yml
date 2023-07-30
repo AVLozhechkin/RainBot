@@ -15,10 +15,10 @@ jobs:
         working-directory: ./deployment/terraform
 
     env:
-      TF_VAR_telegram_bot_token: ${{ secrets.TG_TOKEN }}
+      TF_VAR_telegram_bot_token: ${{ secrets.MOSCOW_TG_TOKEN }}
       TF_VAR_iam_token: ${{ secrets.IAM_TOKEN }}
       TF_VAR_yandex_weather_api_key: ${{ secrets.YANDEX_WEATHER_API_KEY }}
-      TF_VAR_folder_id: ${{ secrets.FOLDER_ID }}
+      TF_VAR_folder_id: ${{ secrets.MOSCOW_FOLDER_ID }}
       TF_VAR_longitude: ${{ secrets.MOSCOW_LONGITUDE }}
       TF_VAR_latitude: ${{ secrets.MOSCOW_LATITUDE }}
 
@@ -32,7 +32,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Terraform initialization
-        run: terraform init -backend-config="access_key=${{ secrets.MOSCOW_TERRAFORM_ACCESS_KEY }}" -backend-config="secret_key=${{ secrets.MOSCOW_TERRAFORM_SECRET_KEY }}"
+        run: terraform init -backend-config="access_key=${{ secrets.MOSCOW_TERRAFORM_ACCESS_KEY }}" -backend-config="secret_key=${{ secrets.MOSCOW_TERRAFORM_SECRET_KEY }}" -backend-config="bucket=${{ secrets.MOSCOW_TERRAFORM_BUCKET_NAME }}"
 
       # - name: Terraform module initialization
       #   run: |

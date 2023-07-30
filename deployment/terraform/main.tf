@@ -1,6 +1,5 @@
 terraform {
   backend "s3" {
-    bucket = "moscow-rainbot-terraform-state-bucket"
     region = "ru-central1"
     key = "terraform.tfstate"
     endpoint = "https://storage.yandexcloud.net"
