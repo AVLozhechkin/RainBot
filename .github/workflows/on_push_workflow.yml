@@ -1,4 +1,4 @@
-name: Deploy to Yandex
+name: Deploy Moscow RainBot to Yandex
 
 on:
   push:
@@ -33,15 +33,12 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Terraform initialization
-        run: terraform init
+        run: terraform init -backend-config="access_key=${{ secrets.TERRAFORM_ACCESS_KEY }}" -backend-config="secret_key=${{ secrets.TERRAFORM_SECRET_KEY }}"
 
-      - name: Terraform module initialization
-        run: |
-          cd rainbot_tf_module;
-          terraform init
-
-      - name: Terraform destroy
-        run: terraform apply --destroy
+      # - name: Terraform module initialization
+      #   run: |
+      #     cd rainbot_tf_module;
+      #     terraform init
 
       - name: Terraform apply
         run: terraform apply --auto-approve --parallelism=2

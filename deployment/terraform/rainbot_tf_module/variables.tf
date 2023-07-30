@@ -16,6 +16,17 @@ variable "telegram_bot_token" {
   description = "Telegram bot token"
 }
 
+variable "longitude" {
+  type        = string
+  description = "Longitude of the city"
+}
+
+variable "latitude" {
+  type        = string
+  description = "Latitude of the city"
+}
+
+
 variable "queue_setup" {
   type = object({
     visibility_timeout_seconds = number

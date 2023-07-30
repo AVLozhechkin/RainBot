@@ -22,8 +22,8 @@ resource "yandex_function" "yandex-weather-fetcher" {
     "SQS_SECRET" : yandex_iam_service_account_static_access_key.access_key.secret_key,
     "SQS_ENDPOINT_REGION" : local.sqs_endpoint_region,
     "FORECAST_HANDLER_QUEUE" : yandex_message_queue.queue["forecast-handler-queue"].id,
-    "LATITUDE": "55.755864",
-    "LONGITUDE": "37.617698"
+    "LATITUDE": var.latitude,
+    "LONGITUDE": var.longitude
   }
   content {
     zip_filename = "../zips/RainBot.YandexWeatherFetcher.zip"
@@ -45,7 +45,9 @@ resource "yandex_function" "forecast-handler" {
     "SQS_ACCESS_KEY" : yandex_iam_service_account_static_access_key.access_key.access_key,
     "SQS_SECRET" : yandex_iam_service_account_static_access_key.access_key.secret_key,
     "SQS_ENDPOINT_REGION" : local.sqs_endpoint_region,
-    "SEND_MESSAGE_QUEUE" : yandex_message_queue.queue["send-telegram-message-queue"].id
+    "SEND_MESSAGE_QUEUE" : yandex_message_queue.queue["send-telegram-message-queue"].id,
+    "LATITUDE": var.latitude,
+    "LONGITUDE": var.longitude
   }
   content {
     zip_filename = "../zips/RainBot.ForecastHandler.zip"

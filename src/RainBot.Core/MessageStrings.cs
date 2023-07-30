@@ -6,6 +6,8 @@ namespace RainBot.Core;
 
 public static class MessageStrings
 {
+    private static string s_yandexUri = $"https://yandex.ru/pogoda/?lat={Environment.GetEnvironmentVariable("LATITUDE")}&lon={Environment.GetEnvironmentVariable("LONGITUDE")}";
+
     public static readonly Lazy<Dictionary<MessageTypes, string>> EnglishMessages = new Lazy<Dictionary<MessageTypes, string>>(
         () => new Dictionary<MessageTypes, string>
         {
@@ -14,9 +16,9 @@ public static class MessageStrings
             { MessageTypes.SubscriptionAlreadyExist, "The subscription has already been issued." },
             { MessageTypes.SubscriptionRemoved, "The subscription was successfully deleted. All data that you used the bot has been deleted." },
             { MessageTypes.UnknownMessage, "If you want to unsubscribe, please send \"/stop\" message." },
-            { MessageTypes.WeatherTemplateForSameConditions, "According to Yandex Weather, {0} is expected in the {1} and {2}. The approximate duration of precipitation is {3} minutes and {4} minutes, respectively." },
-            { MessageTypes.WeatherTemplateForDifferentConditions, "According to Yandex Weather, {0} is expected in the {1}, and {2} in the {3}. The approximate duration of precipitation is {4} and {5} minutes, respectively." },
-            { MessageTypes.WeatherTemplateForOneRecord, "According to Yandex Weather, {0} is expected in the {1}. The approximate duration of precipitation is {2} minutes." },
+            { MessageTypes.WeatherTemplateForSameConditions, $"[According to Yandex Weather,]({s_yandexUri})" + " {0} is expected in the {1} and {2}. The approximate duration of precipitation is {3} minutes and {4} minutes, respectively." },
+            { MessageTypes.WeatherTemplateForDifferentConditions, $"[According to Yandex Weather,]({s_yandexUri})" + " {0} is expected in the {1}, and {2} in the {3}. The approximate duration of precipitation is {4} and {5} minutes, respectively." },
+            { MessageTypes.WeatherTemplateForOneRecord, $"[According to Yandex Weather,]({s_yandexUri})" + " {0} is expected in the {1}. The approximate duration of precipitation is {2} minutes." },
         }
         );
 
@@ -28,9 +30,9 @@ public static class MessageStrings
             { MessageTypes.SubscriptionAlreadyExist, "Подписка уже оформлена." },
             { MessageTypes.SubscriptionRemoved, "Подписка успешно удалена. Все данные о том, что вы пользовались ботом были удалены." },
             { MessageTypes.UnknownMessage, "Если вы хотите отписаться, то пришлите сообщение с текстом \"/stop\"" },
-            { MessageTypes.WeatherTemplateForSameConditions, "По данным Яндекс Погоды, {0} и {1} ожидается {2}. Приблизительная продолжительность осадков - {3} и {4} мин. соответственно." },
-            { MessageTypes.WeatherTemplateForDifferentConditions, "По данным Яндекс Погоды, {0} ожидается {1}, а {2} - {3}. Приблизительная продолжительность осадков - {4} и {5} мин. соответственно." },
-            { MessageTypes.WeatherTemplateForOneRecord, "По данным Яндекс Погоды, {0} ожидается {1}. Приблизительная продолжительность осадков - {2} мин." },
+            { MessageTypes.WeatherTemplateForSameConditions, $"[По данным Яндекс Погоды,]({s_yandexUri})" + " {0} и {1} ожидается {2}. Приблизительная продолжительность осадков - {3} и {4} мин. соответственно." },
+            { MessageTypes.WeatherTemplateForDifferentConditions, $"[По данным Яндекс Погоды,]({s_yandexUri})" + " {0} ожидается {1}, а {2} - {3}. Приблизительная продолжительность осадков - {4} и {5} мин. соответственно." },
+            { MessageTypes.WeatherTemplateForOneRecord, $"[По данным Яндекс Погоды,]({s_yandexUri})" + " {0} ожидается {1}. Приблизительная продолжительность осадков - {2} мин." },
         }
         );
 

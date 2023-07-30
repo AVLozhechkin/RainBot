@@ -20,3 +20,13 @@ variable "folder_id" {
   description = "Id of your Yandex Cloud folder"
 }
 
+variable "longitude" {
+  type        = string
+  description = "Longitude of the city"
+}
+
+variable "latitude" {
+  type        = string
+  description = "Latitude of the city"
+}
+
