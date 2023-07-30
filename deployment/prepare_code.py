@@ -33,7 +33,7 @@ def copy(src_folder: Path, zip_folder: Path):
                 for file in files:
                     if not Path.exists(path_to_copy):
                         os.mkdir(path_to_copy)
-                    shutil.copyfile(address + '\\' + file, path_to_copy.joinpath(file))
+                    shutil.copyfile(address + '/' + file, path_to_copy.joinpath(file))
 
 def removeDependency(zip_folder: Path):
     files = list(zip_folder.rglob('*.csproj'))
