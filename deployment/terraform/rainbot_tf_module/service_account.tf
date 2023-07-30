@@ -1,6 +1,13 @@
 resource "yandex_iam_service_account" "service_account" {
-  name        = "rainbot-service-account"
+  name        = "rainbot-service-account-${random_string.service-account-randomizer.result}"
   description = "Service account for Terraform"
+}
+
+resource "random_string" "service-account-randomizer" {
+  length = 4
+  numeric = true
+  special = false
+  upper = false
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "service_account_roles" {
