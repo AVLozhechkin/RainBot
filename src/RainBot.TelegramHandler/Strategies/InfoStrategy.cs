@@ -1,24 +1,31 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Diagnostics;
-using RainBot.Core;
-using RainBot.Core.Dto;
 using RainBot.Core.Services;
+using RainBot.Core;
 using Telegram.Bot.Types;
+using RainBot.Core.Dto;
 
 namespace RainBot.TelegramHandler.Strategies;
-
-public class DefaultStrategy : IMessageProcessStrategy
+public class InfoStrategy : IMessageProcessStrategy
 {
     private readonly IMessageQueueService _messageQueueService;
     private readonly Uri _sendMessageQueue;
 
-    public DefaultStrategy(IMessageQueueService messageQueueService, Uri sendMessageQueue)
+    public InfoStrategy(IMessageQueueService messageQueueService, Uri sendMessageQueue)
     {
         _messageQueueService = messageQueueService;
         _sendMessageQueue = sendMessageQueue;
     }
-    public bool CanBeExecuted(string message) => true;
+    public bool CanBeExecuted(string message)
+    {
+        if (message is null)
+        {
+            return false;
+        }
+
+        return message.Trim().ToUpperInvariant() == "/INFO";
+    }
     public async Task ExecuteAsync(Message message)
     {
         Guard.IsNotNull(message);
@@ -27,7 +34,7 @@ public class DefaultStrategy : IMessageProcessStrategy
         {
             ChatId = message.Chat.Id,
             LanguageCode = message.From.LanguageCode,
-            Type = MessageTypes.UnknownMessage
+            Type = MessageTypes.InfoMessage
         };
         Console.WriteLine($"Received a \"{message.Text}\" message from {message.From.Id} ({message.From.LanguageCode})");
         await _messageQueueService.SendMessageAsync(sendMessageDto, _sendMessageQueue);

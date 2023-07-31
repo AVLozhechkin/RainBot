@@ -9,5 +9,6 @@ public enum MessageTypes
     UnknownMessage,
     WeatherTemplateForOneRecord,
     WeatherTemplateForSameConditions,
-    WeatherTemplateForDifferentConditions
+    WeatherTemplateForDifferentConditions,
+    InfoMessage
 }
