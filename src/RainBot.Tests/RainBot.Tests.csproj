@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -26,8 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RainBot.ForecastHandler\RainBot.ForecastHandler.csproj" />
-    <ProjectReference Include="..\rainbot.subscriptionhandler\RainBot.SubscriptionHandler.csproj" />
-    <ProjectReference Include="..\rainbot.core\RainBot.Core.csproj" />
+    <ProjectReference Include="..\Rainbot.Subscriptionhandler\RainBot.SubscriptionHandler.csproj" />
+    <ProjectReference Include="..\Rainbot.Core\RainBot.Core.csproj" />
     <ProjectReference Include="..\RainBot.TelegramHandler\RainBot.TelegramHandler.csproj" />
   </ItemGroup>
 
