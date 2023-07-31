@@ -2,13 +2,9 @@ locals {
   sqs_endpoint_region = "ru-central1"
 }
 
-resource "random_string" "user-hash" {
-  length = 15
-}
-
 resource "yandex_function" "yandex-weather-fetcher" {
   name               = "yandex-weather-fetcher"
-  user_hash          = random_string.user-hash.result
+  user_hash          = "${timestamp()}}"
   description        = "Function that fetches forecasts from Yandex.Weather"
   runtime            = "dotnet6"
   entrypoint         = "RainBot.YandexWeatherFetcher.Handler"
@@ -32,7 +28,7 @@ resource "yandex_function" "yandex-weather-fetcher" {
 
 resource "yandex_function" "forecast-handler" {
   name               = "forecast-handler"
-  user_hash          = random_string.user-hash.result
+  user_hash          = "${timestamp()}}"
   description        = "Function that parses weather forecasts, stores it into database and sends notifications if it detects rain."
   runtime            = "dotnet6"
   entrypoint         = "RainBot.ForecastHandler.Handler"
@@ -56,7 +52,7 @@ resource "yandex_function" "forecast-handler" {
 
 resource "yandex_function" "telegram-handler" {
   name              = "telegram-handler"
-  user_hash         = random_string.user-hash.result
+  user_hash          = "${timestamp()}}"
   description       = "Handles Telegram webhooks."
   runtime           = "dotnet6"
   entrypoint        = "RainBot.TelegramHandler.Handler"
@@ -77,7 +73,7 @@ resource "yandex_function" "telegram-handler" {
 
 resource "yandex_function" "subscription-handler" {
   name               = "subscription-handler"
-  user_hash          = random_string.user-hash.result
+  user_hash          = "${timestamp()}}"
   description        = "Handles /start and /stop messages. Adds and removes subscriptions to/from database."
   runtime            = "dotnet6"
   entrypoint         = "RainBot.SubscriptionHandler.Handler"
@@ -99,7 +95,7 @@ resource "yandex_function" "subscription-handler" {
 
 resource "yandex_function" "telegram-message-sender" {
   name              = "telegram-message-sender"
-  user_hash         = random_string.user-hash.result
+  user_hash          = "${timestamp()}}"
   description       = "Sends Telegram message"
   runtime           = "dotnet6"
   entrypoint        = "RainBot.SendTelegramMessage.Handler"
