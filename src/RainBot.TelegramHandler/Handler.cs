@@ -38,7 +38,8 @@ public class Handler
         var strategies = new List<IMessageProcessStrategy>
         {
             new StartStrategy(ymqService, _subscriptionHandlerQueue),
-            new StopStrategy(ymqService, _subscriptionHandlerQueue)
+            new StopStrategy(ymqService, _subscriptionHandlerQueue),
+            new InfoStrategy(ymqService, _sendMessageQueue)
         };
 
         var strategy = strategies.SingleOrDefault(s => s.CanBeExecuted(update.Message.Text), new DefaultStrategy(ymqService, _sendMessageQueue));
