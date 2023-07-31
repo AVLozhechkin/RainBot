@@ -7,6 +7,7 @@ using RainBot.Core.Dto;
 using RainBot.Core.Models.Functions;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace RainBot.SendTelegramMessage;
 
@@ -30,7 +31,7 @@ public class Handler
         };
 
         var botClient = new TelegramBotClient(telegramToken);
-        await botClient.SendTextMessageAsync(new ChatId(message.ChatId), text);
+        await botClient.SendTextMessageAsync(new ChatId(message.ChatId), text, parseMode: ParseMode.Markdown, disableWebPagePreview: true);
 
         return new Response(200, string.Empty);
     }
