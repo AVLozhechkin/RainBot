@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RainBot.Core\RainBot.Core.csproj" />
     <ProjectReference Include="..\RainBot.ForecastHandler\RainBot.ForecastHandler.csproj" />
-    <ProjectReference Include="..\Rainbot.Subscriptionhandler\RainBot.SubscriptionHandler.csproj" />
-    <ProjectReference Include="..\Rainbot.Core\RainBot.Core.csproj" />
+    <ProjectReference Include="..\RainBot.SubscriptionHandler\RainBot.SubscriptionHandler.csproj" />
     <ProjectReference Include="..\RainBot.TelegramHandler\RainBot.TelegramHandler.csproj" />
   </ItemGroup>
 
