@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 
 DEPENDENCY = '..\RainBot.Core\RainBot.Core.csproj'
 CORE_PROJECT_NAME = 'RainBot.Core'
+TESTS_PROJECT_NAME = 'RainBot.Tests'
 
 def prepare(zips: Path):    
     if os.path.exists(zips):
@@ -15,7 +16,7 @@ def prepare(zips: Path):
 
 def copy(src_folder: Path, zip_folder: Path):    
     for folder in os.listdir(src_folder):
-        if folder.startswith('.'):
+        if folder.startswith('.') or folder == TESTS_PROJECT_NAME:
             continue
         path_to_folder = src_folder.joinpath(folder)
         
