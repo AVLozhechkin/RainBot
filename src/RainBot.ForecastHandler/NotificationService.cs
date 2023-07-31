@@ -14,12 +14,16 @@ public class NotificationService
     private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly IMessageQueueService _messageQueueService;
     private readonly Uri _sendMessageQueue;
+    private readonly string _longitude;
+    private readonly string _latitude;
 
-    public NotificationService(ISubscriptionRepository subscriptionRepository, IMessageQueueService messageQueueService, Uri sendMessageQueue)
+    public NotificationService(ISubscriptionRepository subscriptionRepository, IMessageQueueService messageQueueService, Uri sendMessageQueue, string longitude, string latitude)
     {
         _subscriptionRepository = subscriptionRepository;
         _messageQueueService = messageQueueService;
         _sendMessageQueue = sendMessageQueue;
+        _longitude = longitude;
+        _latitude = latitude;
     }
     public async Task SendNotifications(IReadOnlyList<Forecast> forecasts)
     {
@@ -29,7 +33,7 @@ public class NotificationService
 
         if (englishSubscribers.Any())
         {
-            var message = MessageService.BuildNotificationMessage(forecasts, "en");
+            var message = MessageService.BuildNotificationMessage(forecasts, "en", _longitude, _latitude);
 
             await SendNotificationsAsync(englishSubscribers, message);
         }
@@ -38,7 +42,7 @@ public class NotificationService
 
         if (russianSubscribers.Any())
         {
-            var message = MessageService.BuildNotificationMessage(forecasts);
+            var message = MessageService.BuildNotificationMessage(forecasts, "ru", _longitude, _latitude);
 
             await SendNotificationsAsync(russianSubscribers, message);
         }

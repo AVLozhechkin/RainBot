@@ -7,6 +7,7 @@ using RainBot.Core.Models;
 using RainBot.Core.Repositories;
 using RainBot.Core.Services;
 using RainBot.ForecastHandler;
+using RainBot.Tests.Utils;
 using Xunit;
 
 namespace RainBot.Tests.ForecastHandler;
@@ -14,9 +15,8 @@ namespace RainBot.Tests.ForecastHandler;
 public class NotificationServiceTests
 {
     [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    public async Task NotificationService_SendsNotification_WhenDataIsCorrect(int forecastNumber)
+    [MemberData(nameof(GetDifferentForecasts))]
+    public async Task NotificationService_SendsNotification_WhenDataIsCorrect(IReadOnlyList<Forecast> forecasts, string latitude = null, string longitude = null)
     {
         // Arrange
         var subscriptions = new List<Subscription>
@@ -33,8 +33,7 @@ public class NotificationServiceTests
 
         var sendMessageQueue = new Uri("https://test.com");
 
-        var notificationService = new NotificationService(subscriptionRepositoryMock.Object, messageQueueServiceMock.Object, sendMessageQueue);
-        var forecasts = GenerateRainyForecats(forecastNumber);
+        var notificationService = new NotificationService(subscriptionRepositoryMock.Object, messageQueueServiceMock.Object, sendMessageQueue, longitude, latitude);
 
         // Act
         await notificationService.SendNotifications(forecasts);
@@ -47,21 +46,22 @@ public class NotificationServiceTests
                 mqs => mqs.SendMessageAsync(It.Is<SendMessageRequest>(
                     smr => smr.ChatId == subscription.ChatId &&
                     smr.LanguageCode == subscription.LanguageCode &&
-                    smr.Text == MessageService.BuildNotificationMessage(forecasts, subscription.LanguageCode)), sendMessageQueue),
+                    smr.Text == MessageService.BuildNotificationMessage(forecasts, subscription.LanguageCode, longitude, latitude)), sendMessageQueue),
                 Times.Once);
         }
     }
 
-    private static List<Forecast> GenerateRainyForecats(int count)
+    public static IEnumerable<object[]> GetDifferentForecasts()
     {
-        var forecasts = new List<Forecast>(count);
-        var datetime = DateTime.UtcNow;
-
-        for (int i = 0; i < count; i++)
+        return new List<object[]>()
         {
-            forecasts.Add(new Forecast { Date = datetime.Date, Condition = "rain", DayTime = DayTime.Morning, IsNotified = true, PrecipitationPeriod = 480, PrecipitationProbability = 50, UpdatedAt = datetime });
-        }
-
-        return forecasts;
+            new object[] { ForecastGenerator.GenerateRainyForecats(1), "59.938951", "30.315635" },
+            new object[] { ForecastGenerator.GenerateRainyForecats(2), "59.938951", "30.315635" },
+            new object[] { ForecastGenerator.GenerateRainyForecats(2, true), "59.938951", "30.315635" },
+            new object[] { ForecastGenerator.GenerateRainyForecats(1) },
+            new object[] { ForecastGenerator.GenerateRainyForecats(2) },
+            new object[] { ForecastGenerator.GenerateRainyForecats(2, true) },
+        };
     }
+
 }

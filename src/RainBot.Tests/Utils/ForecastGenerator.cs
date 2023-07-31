@@ -6,6 +6,23 @@ namespace RainBot.Tests.Utils;
 
 public static class ForecastGenerator
 {
+    public static IReadOnlyList<Forecast> GenerateRainyForecats(int count, bool differentConditions = false)
+    {
+        var forecasts = new List<Forecast>(count);
+        var datetime = DateTime.UtcNow;
+
+        for (int i = 0; i < count; i++)
+        {
+            forecasts.Add(new Forecast { Date = datetime.Date, Condition = "rain", DayTime = DayTime.Morning, IsNotified = true, PrecipitationPeriod = 480, PrecipitationProbability = 50, UpdatedAt = datetime });
+        }
+
+        if (count == 2 && differentConditions)
+        {
+            forecasts[1].Condition = "snow";
+        }
+
+        return forecasts;
+    }
     public static IReadOnlyList<Forecast> GenerateForecasts(string pattern, bool isNotified)
     {
         if (string.IsNullOrWhiteSpace(pattern))

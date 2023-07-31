@@ -11,6 +11,8 @@ using Yandex.Cloud.Functions;
 namespace RainBot.ForecastHandler;
 public class Handler
 {
+    private readonly string _latitdue = Environment.GetEnvironmentVariable("LATITUDE");
+    private readonly string _longitude = Environment.GetEnvironmentVariable("LONGITUDE");
     private readonly string _databasePath = Environment.GetEnvironmentVariable("YDB_DATABASE");
     private readonly string _accessKey = Environment.GetEnvironmentVariable("SQS_ACCESS_KEY");
     private readonly string _secret = Environment.GetEnvironmentVariable("SQS_SECRET");
@@ -49,7 +51,7 @@ public class Handler
             var ymqService = new YmqService(_accessKey, _secret, _endpointRegion);
             var subscriptionRepository = new SubscriptionRepository(driver);
 
-            var notificationService = new NotificationService(subscriptionRepository, ymqService, _sendMessageQueue);
+            var notificationService = new NotificationService(subscriptionRepository, ymqService, _sendMessageQueue, _longitude, _latitdue);
 
             await notificationService.SendNotifications(rainyForecasts);
         }
