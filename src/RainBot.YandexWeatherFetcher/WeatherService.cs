@@ -45,7 +45,7 @@ public class WeatherService
 
             var weatherRecord = new MyForecast
             {
-                Date = DateTimeOffset.UtcNow.Date,
+                Date = currentTime.Date,
                 UpdatedAt = updatedAt,
             };
 
